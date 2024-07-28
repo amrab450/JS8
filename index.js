@@ -1,5 +1,6 @@
-// Array to store candidates
+// Arrays to store candidates and votes
 let candidates = [];
+let votes = [];
 
 // Class to represent a candidate
 class Candidate {
@@ -15,10 +16,11 @@ class VotingMenu {
 
   // Create a new candidate
   createCandidate() {
-    let name = prompt("Abdelkrim:");
-    let party = prompt("green party:");
+    let name = prompt("ABDELKRIM:");
+    let party = prompt("DEMOCRATE PARTY:");
     let candidate = new Candidate(name, party);
     candidates.push(candidate);
+    votes.push(0); // Initialize votes to 0
     console.log("Candidate added successfully!");
   }
 
@@ -28,7 +30,7 @@ class VotingMenu {
       console.log("No candidates available!");
     } else {
       candidates.forEach((candidate, index) => {
-        console.log(`Candidate #${index + 1}: ${candidate.name} (${candidate.party})`);
+        console.log(`Candidate #${index + 1}: ${candidate.name} (${candidate.party}) - Votes: ${votes[index]}`);
       });
     }
   }
@@ -38,9 +40,10 @@ class VotingMenu {
     if (candidates.length === 0) {
       console.log("No candidates available!");
     } else {
-      let index = prompt("1:");
+      let index = prompt("Enter candidate number to delete:");
       if (index >= 1 && index <= candidates.length) {
         candidates.splice(index - 1, 1);
+        votes.splice(index - 1, 1);
         console.log("Candidate deleted successfully!");
       } else {
         console.log("Invalid candidate number!");
@@ -48,14 +51,15 @@ class VotingMenu {
     }
   }
 
-  // Display a candidate
-  displayCandidate() {
+  // Cast a vote
+  castVote() {
     if (candidates.length === 0) {
       console.log("No candidates available!");
     } else {
-      let index = prompt("1:");
+      let index = prompt("Enter candidate number to vote for:");
       if (index >= 1 && index <= candidates.length) {
-        console.log(`Candidate #${index}: ${candidates[index - 1].name} (${candidates[index - 1].party})`);
+        votes[index - 1]++;
+        console.log("Vote cast successfully!");
       } else {
         console.log("Invalid candidate number!");
       }
@@ -63,45 +67,40 @@ class VotingMenu {
   }
 
   // Show main menu options
- 
   showMainMenuOptions() {
     console.log("Voting Menu:");
     console.log("1. Create Candidate");
     console.log("2. View Candidates");
     console.log("3. Delete Candidate");
-    console.log("4. Display Candidate");
-    console.log("0. Exit");
-    return prompt("Voting Menu:");
-  }
-
-  // Menu loop
-  start() {
-    let selection = this.showMainMenuOptions();
-    while (selection != 0) {
-      switch (selection) {
-        case "1":
-          this.createCandidate();
-          break;
-        case "2":
-          this.viewCandidates();
-          break;
-        case "3":
-          this.deleteCandidate();
-          break;
-        case "4":
-          this.displayCandidate();
-          break;
-        default:
-          console.log("Invalid selection! Please try again.");
-      }
-      selection = this.showMainMenuOptions();
-    }
+    console.log("4. Cast Vote");
+    console.log("5. Exit");
   }
 }
 
 // Create an instance of VotingMenu
 let menu = new VotingMenu();
 
-// Start the menu loop
-menu.start();
-
+// Menu loop
+while (true) {
+  menu.showMainMenuOptions();
+  let choice = prompt("Enter your choice:");
+  switch (choice) {
+    case "1":
+      menu.createCandidate();
+      break;
+    case "2":
+      menu.viewCandidates();
+      break;
+    case "3":
+      menu.deleteCandidate();
+      break;
+    case "4":
+      menu.castVote();
+      break;
+    case "5":
+      console.log("Exiting...");
+     
+    default:
+      console.log("Invalid choice! Please try again.");
+  }
+}
